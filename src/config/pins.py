@@ -27,7 +27,7 @@ MEDIAN_WIN  = 1
 
 
 # Two-point calibration placeholders (raw 16-bit ADC range 0..65535)
-# You can overwrite these later from a calibration script (dark / bright).
+# Can overwrite these later from a calibration script (dark / bright).
 RAW_DARK_DEFAULT   = 0
 RAW_BRIGHT_DEFAULT = 65535
 
