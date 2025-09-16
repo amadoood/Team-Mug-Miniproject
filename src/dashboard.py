@@ -56,14 +56,13 @@ def render_dashboard(statuses):
     print("-" * 60)
 
 
-if __name__ == "__main__":
-    try:
-        while True:
-            all_statuses = [get_device_status(ip) for ip in PICO_IPS]
-            render_dashboard(all_statuses)
-            time.sleep(1)  # Refresh every second
+try:
+    while True:
+        all_statuses = [get_device_status(ip) for ip in PICO_IPS]
+        render_dashboard(all_statuses)
+        time.sleep(1)  # Refresh every second
 
-    except KeyboardInterrupt:
-        print("\nDashboard stopped.")
-    except Exception as e:
-        print(f"\nAn error occurred: {e}")
+except KeyboardInterrupt:
+    print("\nDashboard stopped.")
+except Exception as e:
+    print(f"\nAn error occurred: {e}")

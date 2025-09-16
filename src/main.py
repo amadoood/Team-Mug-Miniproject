@@ -24,7 +24,7 @@ api_note_task = None
 # --- Core Functions ---
 
 
-def connect_to_wifi(wifi_config: str = "wifi_config.json"):
+def connect_to_wifi(wifi_config):
     """Connects the Pico W to the specified Wi-Fi network.
 
     This expects a JSON text file 'wifi_config.json' with 'ssid' and 'password' keys,
@@ -187,8 +187,9 @@ async def handle_request(reader, writer):
 
 async def main():
     """Main execution loop."""
+    print("Starting main event cycle")
     try:
-        ip = connect_to_wifi()
+        ip = connect_to_wifi("wifi_config.json")
         print(f"Starting web server on {ip}...")
         asyncio.create_task(asyncio.start_server(handle_request, "0.0.0.0", 80))
     except Exception as e:
@@ -228,6 +229,7 @@ async def main():
 if __name__ == "__main__":
     try:
         asyncio.run(main())
+        print("Hello world")
     except KeyboardInterrupt:
         print("Program stopped.")
         stop_tone()
