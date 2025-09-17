@@ -1,7 +1,7 @@
 # models/types.py
 try:
     import ujson as json  # noqa: F401
-except Exception:  # CPython
+except Exception:
     import json  # noqa: F401
 
 class NoteEvent:
@@ -16,14 +16,8 @@ class NoteEvent:
         self.duration_ms = int(duration_ms) if duration_ms is not None else None
 
     def to_row(self):
-        # Compact list form for storage: [t, ch, mag, pitch?, dur?]
-        return [
-            self.timestamp_ms,
-            self.channel,
-            round(self.magnitude, 4),
-            self.pitch,
-            self.duration_ms,
-        ]
+        # Compact list form for storage: [t, ch, mag, pitch, dur]
+        return [self.timestamp_ms, self.channel, round(self.magnitude, 4), self.pitch, self.duration_ms]
 
     @staticmethod
     def from_row(row):
