@@ -1,23 +1,25 @@
 # models/types.py
+try:
+    import ujson as json  # noqa: F401
+except Exception:
+    import json  # noqa: F401
 
 class NoteEvent:
-    """
-    Minimal musical event used across the app.
-    pitch: MIDI-style int (0..127) or None (if mapping happens later)
-    magnitude: 0.0..1.0 (acts like velocity)
-    channel: e.g., sensor index
-    timestamp_ms: track-relative (ms) when recording; used for playback scheduling
-    duration_ms: optional, may be None
-    """
     __slots__ = ("channel", "timestamp_ms", "magnitude", "pitch", "duration_ms")
 
-    def __init__(self, channel, timestamp_ms, magnitude, pitch=None, duration_ms=None):
+    def __init__(self, channel: int, timestamp_ms: int, magnitude: float,
+                 pitch: int | None = None, duration_ms: int | None = None):
         self.channel = int(channel)
         self.timestamp_ms = int(timestamp_ms)
         self.magnitude = float(magnitude)
         self.pitch = int(pitch) if pitch is not None else None
         self.duration_ms = int(duration_ms) if duration_ms is not None else None
 
-    def __repr__(self):
-        return ("NoteEvent(ch=%s, t=%sms, mag=%.2f, pitch=%s, dur=%s)" %
-                (self.channel, self.timestamp_ms, self.magnitude, self.pitch, self.duration_ms))
+    def to_row(self):
+        # Compact list form for storage: [t, ch, mag, pitch, dur]
+        return [self.timestamp_ms, self.channel, round(self.magnitude, 4), self.pitch, self.duration_ms]
+
+    @staticmethod
+    def from_row(row):
+        t, ch, mag, pitch, dur = row
+        return NoteEvent(ch, t, mag, pitch, dur)
