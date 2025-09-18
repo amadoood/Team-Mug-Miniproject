@@ -1,0 +1,10 @@
+{
+  "type": "synth_settings",
+  "master": 0.5,
+  "env": {
+    "attack_ms": 10,
+    "decay_ms": 40,
+    "sustain": 0.6,
+    "release_ms": 60
+  }
+}

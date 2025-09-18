@@ -1,0 +1,20 @@
+{
+  "type": "note_sequence",
+  "events": [
+    {
+      "pitch": 60,
+      "velocity": 0.6,
+      "duration_ms": 120
+    },
+    {
+      "pitch": 64,
+      "velocity": 0.6,
+      "duration_ms": 120
+    },
+    {
+      "pitch": 67,
+      "velocity": 0.6,
+      "duration_ms": 160
+    }
+  ]
+}
