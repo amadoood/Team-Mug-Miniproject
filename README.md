@@ -3,8 +3,9 @@
 Turn light into music. A photoresistor feeds an ADC; we map intensity to musical notes and drive a PWM buzzer. Optional switches add play/pause and scale control. There’s also a lightweight Wi-Fi mode so you can trigger tones from another device on the same network.
 
 ---
-Video Link Demo - https://drive.google.com/file/d/1KTr6eFR7K83wJlsfjKGP5MMws-QpyccM/view?usp=sharing
-                - https://drive.google.com/file/d/1NOr-fIpoPnacQl0EYEGgdjyJ5QuMcFBL/view?usp=sharing
+Video Link Demo 
+- https://drive.google.com/file/d/1KTr6eFR7K83wJlsfjKGP5MMws-QpyccM/view?usp=sharing
+- https://drive.google.com/file/d/1NOr-fIpoPnacQl0EYEGgdjyJ5QuMcFBL/view?usp=sharing
 ---
 
 ## Hardware
