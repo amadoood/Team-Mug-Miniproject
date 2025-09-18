@@ -22,12 +22,6 @@ def get_device_status(ip):
         status.update(health_data)
         status["status"] = health_data.get("status", "Unknown")
 
-        # Get sensor data
-        sensor_res = requests.get(f"http://{ip}/sensor", timeout=1)
-        sensor_res.raise_for_status()
-        sensor_data = sensor_res.json()
-        status["norm"] = sensor_data.get("norm", 0.0)
-
     except requests.exceptions.RequestException as e:
         status["status"] = f"Offline ({type(e).__name__})"
 
@@ -43,15 +37,7 @@ def render_dashboard(statuses):
     print("-" * 60)
 
     for status in statuses:
-        # Create a simple bar graph for the light level
-        light_level = status.get("norm", 0.0)
-        bar_length = int(light_level * 10)
-        bar = "█" * bar_length + "─" * (10 - bar_length)
-
-        print(
-            f"{status['ip']:<16} {status['device_id']:<25} {status['status'].capitalize():<10} "
-            f"[{bar}] {light_level:.2f}"
-        )
+        print(f"{status['ip']:<16} {status['device_id']:<25} {status['status'].capitalize():<10} ")
 
     print("-" * 60)
 

@@ -123,16 +123,9 @@ async def handle_request(reader, writer):
     content_type = "text/html"
 
     # --- API Endpoint Routing ---
-    if method == "GET" and url == "/":
-        html = f"""
-        <html>
-            <body>
-                <h1>Pico Light Orchestra</h1>
-                <p>Current light sensor reading: {light_value}</p>
-            </body>
-        </html>
-        """
-        response = html
+    if method == "GET" and url == "/health":
+        response = {"status": "OK"}
+        
     elif method == "POST" and url == "/play_note":
         # This requires reading the request body, which is not trivial.
         # A simple approach for a known content length:
@@ -151,7 +144,7 @@ async def handle_request(reader, writer):
             # Start the new note as a background task
             api_note_task = asyncio.create_task(play_api_note(freq, duration))
 
-            response = '{"status": "ok", "message": "Note playing started."}'
+            response = '{"status": "OK", "message": "Note playing started."}'
             content_type = "application/json"
         except (ValueError, json.JSONDecodeError):
             writer.write(b'HTTP/1.0 400 Bad Request\r\n\r\n{"error": "Invalid JSON"}\r\n')
@@ -165,7 +158,7 @@ async def handle_request(reader, writer):
             api_note_task.cancel()
             api_note_task = None
         stop_tone()  # Force immediate stop
-        response = '{"status": "ok", "message": "All sounds stopped."}'
+        response = '{"status": "OK", "message": "All sounds stopped."}'
         content_type = "application/json"
     else:
         writer.write(b"HTTP/1.0 404 Not Found\r\n\r\n")
