@@ -121,7 +121,7 @@ async def handle_request(reader, writer):
 
     # --- API Endpoint Routing ---
     if method == "GET" and url == "/health":
-        response = {"status": "OK"}
+        response = {"status": "OK", "status_code": 200}
 
     elif method == "POST" and url == "/stop":
         if api_note_task:
