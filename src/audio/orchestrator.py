@@ -12,12 +12,12 @@ Requires:
 """
 
 import time
-from config.pins import PIN_BUZZER, LOOP_PERIOD_MS, FREQ_MIN_HZ, FREQ_MAX_HZ
+from config.pins import PIN_BUZZER, LOOP_PERIOD_MS
 from hal.pwm_audio import PWMAudio
-from synth import Synth
-from light_sensor import LightSensor
-from switches import SwitchController
-from light_to_note import LightToNoteMapper
+from .synth import Synth
+from .light_sensor import LightSensor
+from .switches import SwitchController
+from .light_to_note import LightToNoteMapper
 
 
 class LightOrchestra:

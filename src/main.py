@@ -1,6 +1,12 @@
 # main.py for Raspberry Pi Pico W
 # Title: Pico Light Orchestra Instrument Code
 
+
+import sys
+if '/src' not in sys.path:
+    sys.path.append('/src')
+
+
 import machine
 import time
 import network
@@ -10,11 +16,11 @@ import asyncio
 # --- Pin Configuration ---
 # The photosensor is connected to an Analog-to-Digital Converter (ADC) pin.
 # We will read the voltage, which changes based on light.
-photo_sensor_pin = machine.ADC(26)
+photo_sensor_pin = machine.ADC(28)
 
 # The buzzer is connected to a GPIO pin that supports Pulse Width Modulation (PWM).
 # PWM allows us to create a square wave at a specific frequency to make a sound.
-buzzer_pin = machine.PWM(machine.Pin(18))
+buzzer_pin = machine.PWM(machine.Pin(15))
 
 # --- Global State ---
 # This variable will hold the task that plays a note from an API call.
