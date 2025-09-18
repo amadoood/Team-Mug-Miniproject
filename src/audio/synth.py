@@ -125,3 +125,4 @@ class Synth:
         return [] if not self.voice else [{
             "voice_id": 0, "pitch": self.voice["pitch"], "freq": self.voice["freq"],
             "level": self.voice["level"], "released": self.voice["released"]
+        }]
