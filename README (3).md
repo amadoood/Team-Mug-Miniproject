@@ -137,7 +137,7 @@ curl.exe -s -X POST "http://$IP/play_note" -H "Content-Type: application/json" -
 curl.exe -s -X POST "http://$IP/stop" -H "Content-Type: application/json" -d "{}"
 
 
-Repo Structure (key bits)
+# Repo Structure (key bits)
 src/
   audio/            # synth, orchestrator, light sensor, switches, mapping
   hal/              # PWM/ADC HAL drivers
