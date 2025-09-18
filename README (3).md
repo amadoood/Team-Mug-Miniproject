@@ -3,6 +3,8 @@
 Turn light into music. A photoresistor feeds an ADC; we map intensity to musical notes and drive a PWM buzzer. Optional switches add play/pause and scale control. There’s also a lightweight Wi-Fi mode so you can trigger tones from another device on the same network.
 
 ---
+Video Link Demo - https://drive.google.com/file/d/1KTr6eFR7K83wJlsfjKGP5MMws-QpyccM/view?usp=sharing - https://drive.google.com/file/d/1NOr-fIpoPnacQl0EYEGgdjyJ5QuMcFBL/view?usp=sharing
+---
 
 ## Hardware
 
@@ -20,23 +22,27 @@ Turn light into music. A photoresistor feeds an ADC; we map intensity to musical
 
 ## Software Architecture
 
-- **HAL (Hardware Abstraction Layer)**  
-  Tiny driver layer around MicroPython’s `machine` APIs, exposing stable methods so the rest of the code stays hardware-agnostic and testable.
-  - `config/pins.py` — single source of truth for wiring & tunables
-  - `hal/adc_reader.py` — normalized light reads + calibration hooks
-  - `hal/pwm_audio.py` — pop-safe PWM driver (mute → set freq → set duty → play → mute)
-- **Synth (`audio/synth.py`)**  
-  Mono voice with ADSR-lite envelope and MIDI→Hz conversion; non-blocking `tick(now_ms)` updates.
-- **Mapping (`audio/light_to_note.py`)**  
-  Maps light % to note/velocity/duration across selectable scales & ranges.
 - **Orchestrator (`audio/orchestrator.py`)**  
-  Main loop (~10 ms): reads sensor, handles switches, maps to notes, advances synth, prints status.
-- **Storage & UI**  
-  Store/replay patterns; small demo UI; tests for edge cases and user feedback.
-- **Sequencer & State Machine**  
-  Record timestamped events; loop & quantize playback; integrates with Storage/UI.
-- **Wi-Fi server (alt run mode)**  
-  Simple HTTP handlers to report status and play/stop a tone from another device on the LAN.
+  Central loop (~10 ms) that reads the light sensor, handles switches (play/pause, scale, debug), maps intensity to notes, and advances the synth.
+
+- **Mapping (`audio/light_to_note.py`)**  
+  Converts light (%) into musical events (MIDI pitch, velocity, duration) across selectable scales and note ranges; configurable at runtime.
+
+- **Synth (`audio/synth.py`)**  
+  Mono voice with MIDI→Hz and a lightweight ADSR; non-blocking `tick(now_ms)` updates duty/volume each frame.
+
+- **Sequencer & Storage (`sequencer/`, `storage/`, `integration/`)**  
+  Record timestamped note events, loop/quantize playback, and persist/load patterns and synth settings; used by tests and demos.
+
+- **UI (`ui/`)**  
+  Small demos and feedback flows that drive record/play and show status; validates debounce and user interactions.
+
+- **Wi-Fi Server (alt run mode)**  
+  Async HTTP endpoints to query status and play/stop tones from another device on the LAN; starts muted to avoid boot beeps.  
+  *(Some docs say `GET /health` & `POST /stop`; in this branch we use `GET /`, `POST /play_note`, `POST /stop`.)*
+
+- **HAL & Config (`hal/`, `config/`)**  
+  Thin, testable drivers around `machine` (ADC/PWM) plus centralized pins/tunables; pop-safe PWM and normalized ADC reads.
 
 ---
 
@@ -103,21 +109,16 @@ Designed the enclosure concept and layout to keep wiring clean, switches accessi
 Basic pico testing was conducted to ensure hardware piece works beforehand.
 
 ### Laptop (development/testing)
-```bash
 cd tests
 python -m run_all_tests_unified   # all suites, including Storage↔Audio integration
 python -m main_pc                 # desktop run (no hardware)
 Pico (orchestrator mode)
-Ensure pins in config/pins.py match wiring:
 
-python
-Copy code
+Ensure pins in config/pins.py match wiring:
 PIN_BUZZER = 15
 PIN_LIGHT_ADC = 28
-Copy audio/, hal/, config/, etc. to the device root or keep them under /src and add to sys.path in main.py:
 
-python
-Copy code
+Copy audio/, hal/, config/, etc. to the device root or keep them under /src and add to sys.path in main.py:
 import sys
 if '/src' not in sys.path: sys.path.append('/src')
 Reboot or import main in the REPL.
@@ -127,18 +128,16 @@ Hold SW1 to calibrate; SW1 tap = play/pause; SW2 tap = change scale.
 Pico (Wi-Fi API mode)
 Boot the Wi-Fi main.py and note the printed IP.
 
-From computer (PowerShell example):
 
-powershell
-Copy code
+From computer (PowerShell example):
 $IP="10.0.0.123"
 # Play C5 (~523 Hz) for 0.5 s
 curl.exe -s -X POST "http://$IP/play_note" -H "Content-Type: application/json" -d "{\"frequency\":523,\"duration\":0.5}"
 # Stop
 curl.exe -s -X POST "http://$IP/stop" -H "Content-Type: application/json" -d "{}"
-Repo Structure (key bits)
-bash
 
+
+Repo Structure (key bits)
 src/
   audio/            # synth, orchestrator, light sensor, switches, mapping
   hal/              # PWM/ADC HAL drivers
