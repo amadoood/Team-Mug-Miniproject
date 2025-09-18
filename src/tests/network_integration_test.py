@@ -18,4 +18,5 @@ def test_stop_endpoint():
 
 
 test_health_endpoint()
+test_stop_endpoint()
 
