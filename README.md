@@ -2,6 +2,9 @@
 
 ## Design
 
+Video Link Demo - https://drive.google.com/file/d/1KTr6eFR7K83wJlsfjKGP5MMws-QpyccM/view?usp=sharing
+                - https://drive.google.com/file/d/1NOr-fIpoPnacQl0EYEGgdjyJ5QuMcFBL/view?usp=sharing
+
 ### Audio/Syth Lead - Phyo 
 
 The audio synthesis process of the toy relies mainly on the conversion of MIDI pitches to a frequency in hz. It is also responsible for the master volume of the entire system. The user of the toy would be able to tune and modify the pitch, volume, while the orchestrator file that I made helps with the light-to-music conversion function. The file also calls multiple other files I made, including the switches and the individual sensor files. During the testing phase, I verified that the pitch and volume of the buzzer would be mapped with the output of the midi_to_hz function call thus allowing the user to modify the buzzer as they wish. 
