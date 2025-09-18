@@ -1,74 +1,21 @@
 # 2025 Fall ECE Senior Design Miniproject
 
-[Project definition](./Project.md)
+## Design
 
-This project uses the Raspberry Pi Pico 2WH SC1634 (wireless, with header pins).
+### Audio/Syth Lead - Phyo 
 
-Each team must provide a micro-USB cable that connects to their laptop to plug into the Pi Pico.
-The cord must have the data pins connected.
-Splitter cords with multiple types of connectors fanning out may not have data pins connected.
-Such micro-USB cords can be found locally at Microcenter, convenience stores, etc.
-The student laptop is used to program the Pi Pico.
-The laptop software to program and debug the Pi Pico works on macOS, Windows, and Linux.
+The audio synthesis process of the toy relies mainly on the conversion of MIDI pitches to a frequency in hz. It is also responsible for the master volume of the entire system. The user of the toy would be able to tune and modify the pitch, volume, while the orchestrator file that I made helps with the light-to-music conversion function. The file also calls multiple other files I made, including the switches and the individual sensor files. During the testing phase, I verified that the pitch and volume of the buzzer would be mapped with the output of the midi_to_hz function call thus allowing the user to modify the buzzer as they wish. 
 
-This miniproject focuses on using
-[MicroPython](./doc/micropython.md)
-using
-[Thonny IDE](./doc/thonny.md).
-Other IDE can be used, including Visual Studio Code or
-[rshell](./doc/rshell.md).
+### Networking Lead - Amado 
 
-## Hardware
+Our Raspberry Pi based light-buzzer integrator comes with a feature to gather the status or kill the song currently being played through HTTP requests relayed across a common wi-fi network on a separate machine. Ideally, there would be a display interface on the toy box itself that allows the user to configure a wifi SSID and password for the Raspberry Pi to connect to along with a web interface that a user could run through their device that allows the user to send these requests in a user-intuitive manner. However, in its primitive state, the client uses the IP address of a given Raspberry Pi to send a request which is caught in an asynchronous server task on the Raspberry Pi’s side. The request is parsed and a response completes the handshake through a JSON-style message. Our implementation currently supports two request endpoints: GET /health and POST /stop.
 
-* Raspberry Pi Pico WH [SC1634](https://pip.raspberrypi.com/categories/1088-raspberry-pi-pico-2-w) (WiFi, Bluetooth, with header pins)
-* Freenove Pico breakout board [FNK0081](https://store.freenove.com/products/fnk0081)
-* Piezo Buzzer SameSky CPT-3095C-300
-* 10k ohm resistor
-* 2 [tactile switches](hhttps://www.mouser.com/ProductDetail/E-Switch/TL59NF160Q?qs=QtyuwXswaQgJqDRR55vEFA%3D%3D)
+### Storage & UI Lead - Pat
 
-### Photoresistor details
+I built the storage and interface layer of the toy that lets users record, save and replay the musical notes they play through the storing of signals. The toy ensures button presses like record or play are simple and give immediate LED feedback, while musical patterns are safely stored for reuse.
 
-The photoresistor uses the 10k ohm resistor as a voltage divider
-[circuit](./doc/photoresistor.md).
-The 10k ohm resistor connects to "3V3" and to ADC2.
-The photoresistor connects to the ADC2 and to AGND.
-Polarity is not important for this resistor and photoresistor.
+Using both test scripts and demos, I validated scenarios such as saving empty patterns, toggling recording with debounce timing, and ensuring playback matched the stored events. Through testing, I uncovered issues like duplicate button presses being misread or LEDs not signaling errors clearly. I then refined the design , for example, improving debounce handling and expanding LED feedback for error states so that every action gives clear, immediate feedback.
 
-The MicroPython
-[machine.ADC](https://docs.micropython.org/en/latest/library/machine.ADC.html)
-class is used to read the analog voltage from the photoresistor.
-The `machine.ADC(id)` value corresponds to the "GP" pin number.
-On the Pico W, GP28 is ADC2, accessed with `machine.ADC(28)`.
+### Sequencer & State Machine Lead – Juhan
 
-### Piezo buzzer details
-
-PWM (Pulse Width Modulation) can be used to generate analog signals from digital outputs.
-The Raspberry Pi Pico has eight PWM groups each with two PWM channels.
-The [Pico WH pinout diagram](https://datasheets.raspberrypi.com/picow/PicoW-A4-Pinout.pdf)
-shows that almost all Pico pins can be used for multiple distinct tasks as configured by MicroPython code or other software.
-In this exercise, we will generate a PWM signal to drive a speaker.
-
-GP16 is one of the pins that can be used to generate PWM signals.
-Connect the speaker with the black wire (negative) to GND and the red wire (positive) to GP16.
-
-In a more complete project, we would use additional resistors and capacitors with an amplifer to boost the sound output to a louder level with a bigger speaker.
-The sound output is quiet but usable for this exercise.
-
-Musical notes correspond to particular base frequencies and typically have rich harmonics in typical musical instruments.
-An example soundboard showing note frequencies is [clickable](https://muted.io/note-frequencies/).
-Over human history, the corresspondance of notes to frequencies has changed over time and location and musical cultures.
-For the question below, feel free to use musical scale of your choice!
-
-[Music Examples](https://github.com/twisst/Music-for-Raspberry-Pi-Pico/blob/main/play.py)
-
-
-## Notes
-
-Pico MicroPython time.sleep() doesn't error for negative values even though such are obviously incorrect--it is undefined for a system to sleep for negative time.
-Duty cycle greater than 1 is undefined, so we clip the duty cycle to the range [0, 1].
-
-
-## Reference
-
-* [Pico 2WH pinout diagram](https://datasheets.raspberrypi.com/picow/pico-2-w-pinout.pdf) shows the connections to analog and digital IO.
-* Getting Started with Pi Pico [book](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf)
+I built the sequencer and state machine that records light-triggered note events, stores them with timestamps, and plays them back with looping and quantization. I tested it first by simulating events to check timing and playback, then by integrating it with the Controller and Storage modules to confirm that patterns could be saved, loaded, and replayed correctly.
