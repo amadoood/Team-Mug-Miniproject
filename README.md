@@ -19,3 +19,8 @@ Using both test scripts and demos, I validated scenarios such as saving empty pa
 ### Sequencer & State Machine Lead – Juhan
 
 I built the sequencer and state machine that records light-triggered note events, stores them with timestamps, and plays them back with looping and quantization. I tested it first by simulating events to check timing and playback, then by integrating it with the Controller and Storage modules to confirm that patterns could be saved, loaded, and replayed correctly.
+
+### Hardware Abstraction Layer Lead – Phyliss
+
+I was in charge of our hardware abstraction layer (HAL) and integration. I focused on making the system reliable, portable, and easy to work on as a team. I standardized the pin/config management (`config/pins.py`) and implemented the PWM audio driver with pop-safe ordering (mute → set freq → set duty → play → mute) plus safe clamping, alongside the ADC light reader with clean, testable hooks. On top of the HAL, I drove the full software integration: aligning the synth (non-blocking `tick` loop), light-to-note mapping, and orchestrator timing so they run coherently both on a laptop (with MicroPython shims) and on the Pico. To keep regressions out, I also added a unified test runner that exercises Storage/UI, the HAL↔Synth↔Orchestrator pipeline, and a real Storage↔Audio path. For the Wi-Fi mode, I included a stable continuous playing sound alongside and a pop-safe play path so the networking endpoint can trigger notes without affecting the core loop. Overall, this let every lead stream build against a stable HAL and guaranteed that all pieces run together end-to-end.
+
