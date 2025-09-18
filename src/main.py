@@ -116,9 +116,6 @@ async def handle_request(reader, writer):
         await writer.wait_closed()
         return
 
-    response = ""
-    content_type = "text/html"
-
     # --- API Endpoint Routing ---
     if method == "GET" and url == "/health":
         response = {"status": "OK", "status_code": 200}
