@@ -138,12 +138,12 @@ curl.exe -s -X POST "http://$IP/stop" -H "Content-Type: application/json" -d "{}
 
 
 # Repo Structure (key bits)
-src/
-  audio/            # synth, orchestrator, light sensor, switches, mapping
-  hal/              # PWM/ADC HAL drivers
-  config/           # pins & tunables
-  storage/, ui/     # storage and UI components + tests
-  main_pc.py        # desktop runner
-  main.py           # Pico runner (orchestrator or Wi-Fi mode)
+- src/
+  - audio/            # synth, orchestrator, light sensor, switches, mapping
+  - hal/              # PWM/ADC HAL drivers
+  - config/           # pins & tunables
+  - storage/, ui/     # storage and UI components + tests
+  - main_pc.py        # desktop runner
+  - main.py           # Pico runner (orchestrator or Wi-Fi mode)
 
 
