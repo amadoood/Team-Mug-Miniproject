@@ -1,4 +1,4 @@
-# Team Mug — Light Orchestra (Raspberry Pi Pico W)
+# Team Mug — Light Orchestra Project (Raspberry Pi Pico W)
 
 Turn light into music. A photoresistor feeds an ADC; we map intensity to musical notes and drive a PWM buzzer. Optional switches add play/pause and scale control. There’s also a lightweight Wi-Fi mode so you can trigger tones from another device on the same network.
 
