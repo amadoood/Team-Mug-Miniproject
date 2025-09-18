@@ -9,9 +9,13 @@ SIMULATION = False  # True → use fake drivers on laptop; False → Pico hardwa
 
 # === Pin map (Raspberry Pi Pico 2WH) ===
 PIN_LDR_ADC = 28     # GP28 (ADC2) — light sensor
-PIN_BUZZER  = 16     # GP16 (PWM)  — piezo buzzer
-PIN_BTN_A   = 14     # GP14 (pull-up) — button A
-PIN_BTN_B   = 15     # GP15 (pull-up) — button B
+PIN_BUZZER  = 15     # GP15 (PWM)  — piezo buzzer
+
+PIN_LED_R   = 1     # red led
+PIN_LED_G   = 2     # green led
+PIN_LED_B   = 3     #blue led
+
+LED_ACTIVE_HIGH = False  #rgb is common-anode   
 
 
 
@@ -32,15 +36,16 @@ RAW_DARK_DEFAULT   = 0
 RAW_BRIGHT_DEFAULT = 65535
 
 
-# === Buttons (used by hal/gpio_ui.py later) ===
-BTN_DEBOUNCE_MS = 30   # basic software debounce
-
-
 # === Loop timing target (used by app/orchestrator) ===
 LOOP_PERIOD_MS = 10    # control loop tick; ties to CPU < 25% goal
+BTN_DEBOUNCE_MS = 30   #debounce
 
 
 # === Audio defaults/bounds (used by hal/pwm_audio.py & audio layers) ===
 TONE_DUTY   = 0.50     # 0..1 perceived loudness (stay ≤ 0.7 to avoid harshness)
 MIN_TONE_HZ = 20.0     # clamp very low pitches (below typical PWM audio range)
 MAX_TONE_HZ = 10000.0  # clamp very high pitches
+
+#backup to avoid breakage
+PIN_LDR = PIN_LDR_ADC
+
