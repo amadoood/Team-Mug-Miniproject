@@ -116,42 +116,12 @@ async def handle_request(reader, writer):
         await writer.wait_closed()
         return
 
-    # Read current sensor value
-    light_value = photo_sensor_pin.read_u16()
-
     response = ""
     content_type = "text/html"
 
     # --- API Endpoint Routing ---
     if method == "GET" and url == "/health":
         response = {"status": "OK"}
-        
-    elif method == "POST" and url == "/play_note":
-        # This requires reading the request body, which is not trivial.
-        # A simple approach for a known content length:
-        # Note: A robust server would parse Content-Length header.
-        # For this student project, we'll assume a small, simple JSON body.
-        raw_data = await reader.read(1024)
-        try:
-            data = json.loads(raw_data)
-            freq = data.get("frequency", 0)
-            duration = data.get("duration", 0)
-
-            # If a note is already playing via API, cancel it first
-            if api_note_task:
-                api_note_task.cancel()
-
-            # Start the new note as a background task
-            api_note_task = asyncio.create_task(play_api_note(freq, duration))
-
-            response = '{"status": "OK", "message": "Note playing started."}'
-            content_type = "application/json"
-        except (ValueError, json.JSONDecodeError):
-            writer.write(b'HTTP/1.0 400 Bad Request\r\n\r\n{"error": "Invalid JSON"}\r\n')
-            await writer.drain()
-            writer.close()
-            await writer.wait_closed()
-            return
 
     elif method == "POST" and url == "/stop":
         if api_note_task:
