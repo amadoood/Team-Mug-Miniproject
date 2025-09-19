@@ -5,8 +5,7 @@ The housing unit protects the Raspberry Pi Pico W and peripherals while making t
 ---
 
 ### Internal Layout  
-![Housing Internal]([Housing%201.png](https://github.com/user-attachments/assets/90f5ace3-4f34-452b-8ae6-a65c8a1c059e))  
-
+![Housing Internal](Housing 1.png)
 This diagram shows the **internal layout** of the housing unit. Key features include:  
 - **Raspberry Pi Pico W** securely mounted on standoffs.  
 - **Photoresistor** positioned for ambient light measurement.  
@@ -17,7 +16,7 @@ This diagram shows the **internal layout** of the housing unit. Key features inc
 ---
 
 ### External Lid & Safe Mounting  
-![Housing Lid]([Housing%203.png](https://github.com/user-attachments/assets/84d34817-16b9-4006-80d4-aa9998892a3f))  
+![Housing Lid](Housing 3.png)  
 
 This diagram shows the **external view of the top lid** with user-facing features:  
 - **Grille** for the piezo buzzer to allow sound output.  
