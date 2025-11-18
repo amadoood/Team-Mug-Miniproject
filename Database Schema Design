@@ -1,0 +1,51 @@
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  email VARCHAR(100) UNIQUE,
+  phone VARCHAR(20),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE mugs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  tag_uid VARCHAR(64) UNIQUE NOT NULL,
+  status ENUM('available','assigned','in_use','returned','overdue') DEFAULT 'available',
+  lease_expires_at DATETIME,
+  last_event_id INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  external_ref VARCHAR(100) UNIQUE,
+  user_id INT,
+  location_id INT,
+  mug_id INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (mug_id) REFERENCES mugs(id)
+);
+
+CREATE TABLE devices (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  location_id INT,
+  kind ENUM('scanner','return_bin'),
+  public_key VARCHAR(255),
+  last_seen_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE events (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  type ENUM('pickup','return','overdue','error'),
+  mug_id INT,
+  user_id INT,
+  order_id INT,
+  device_id INT,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  payload_json JSON,
+  FOREIGN KEY (mug_id) REFERENCES mugs(id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (order_id) REFERENCES orders(id),
+  FOREIGN KEY (device_id) REFERENCES devices(id)
+);
