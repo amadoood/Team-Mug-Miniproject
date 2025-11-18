@@ -5,11 +5,11 @@ It includes table definitions, relationships, and the fields required for backen
 ## Tables Overview
 
 The system uses 5 normalized tables:
-users – stores customer information
-mugs – stores physical mug identity and status
-orders – links users, mugs, and café orders
-events – logs every pickup/return
-devices – identifies hardware endpoints (scanner, return bin)
+- users – stores customer information
+- mugs – stores physical mug identity and status
+- orders – links users, mugs, and café orders
+- events – logs every pickup/return
+- devices – identifies hardware endpoints (scanner, return bin)
 
 
 Schema Details
