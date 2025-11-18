@@ -2,7 +2,7 @@ This document describes the full relational structure of the Mug Exchange backen
 It includes table definitions, relationships, and the fields required for backend API integration.
 
 
-##Tables Overview
+## Tables Overview
 
 The system uses 5 normalized tables:
 users – stores customer information
